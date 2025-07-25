@@ -203,23 +203,6 @@ class GenerationActor(BaseActor):
                         }
                     )
                     await self._append_event(params_event)
-                    used_params = MODE_GENERATION_PARAMS.get(mode, MODE_GENERATION_PARAMS["base"])
-                    params_event = BaseEvent.create(
-                        stream_id=f"generation_{user_id}",
-                        event_type="GenerationParametersUsedEvent",
-                        data={
-                            "user_id": user_id,
-                            "mode": mode,
-                            "temperature": used_params.get("temperature"),
-                            "top_p": used_params.get("top_p"),
-                            "max_tokens": used_params.get("max_tokens"),
-                            "frequency_penalty": used_params.get("frequency_penalty"),
-                            "presence_penalty": used_params.get("presence_penalty"),
-                            "response_length": len(response_text),
-                            "timestamp": datetime.now().isoformat()
-                        }
-                    )
-                    await self._append_event(params_event)
                 
                 # Возвращаем только текст (поведение не меняется)
                 return response_text
@@ -350,14 +333,6 @@ class GenerationActor(BaseActor):
         async def api_call():
             # Получаем параметры для режима
             mode_params = MODE_GENERATION_PARAMS.get(mode, MODE_GENERATION_PARAMS["base"])
-            
-            # Логирование если включено
-            if GENERATION_PARAMS_LOG_CONFIG.get("debug_mode_selection", False):
-                self.logger.debug(
-                    f"Using generation params for mode '{mode}': "
-                    f"temp={mode_params.get('temperature')}, "
-                    f"max_tokens={mode_params.get('max_tokens')}"
-                )
             
             # Логирование если включено
             if GENERATION_PARAMS_LOG_CONFIG.get("debug_mode_selection", False):
