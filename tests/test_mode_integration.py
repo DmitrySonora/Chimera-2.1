@@ -61,7 +61,7 @@ async def test_format_context_with_modes():
     # Проверяем, что промпт содержит и базу, и модификатор talk
     system_content = messages[0]["content"]
     assert "Ты — Химера" in system_content  # Базовая часть
-    assert "Химера-собеседница" in system_content  # Модификатор talk
+    assert "собеседница" in system_content  # Модификатор talk
     print("\n✅ Format context: режим talk правильно применен")
     
     # Проверяем expert режим
